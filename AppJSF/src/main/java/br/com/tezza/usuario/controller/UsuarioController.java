@@ -14,7 +14,7 @@ import br.com.tezza.repository.UsuarioRepository;
 import br.com.tezza.repository.entity.UsuarioEntity;
 import br.com.tezza.uteis.Uteis;
 
-@Named(value="usuarioController") // Transforma a classe em um bean gerenciado pelo CDI.
+@Named(value="usuarioController") // Transforma a classe em um bean gerenciado pelo CDI e passa o nome dele através do value.
 @SessionScoped // O contexto será compartilhado entre todas as solicitações do Servlet que ocorrem na mesma sessão.
 public class UsuarioController implements Serializable { // Ao utilizar o CDI é necessário implementar Serializable.
 

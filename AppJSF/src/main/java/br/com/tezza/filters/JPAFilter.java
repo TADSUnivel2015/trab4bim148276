@@ -20,7 +20,7 @@ import javax.servlet.annotation.WebFilter;
  * Este filter será chamado sempre que uma nova solicitação for feita ao Faces Servlet.
  * Usada a implementação Filter pois é necessário filtrar as requisições.
  */
-@WebFilter(servletNames ={ "Faces Servlet" })
+@WebFilter(servletNames ={ "Faces Servlet" }) // Pega a configuração feita no arquivo web.xml
 public class JPAFilter implements Filter {
 
 	// Variável responsavél por fazer a transação com o banco de dados.

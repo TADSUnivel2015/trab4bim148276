@@ -1,11 +1,16 @@
 package br.com.tezza.repository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import br.com.tezza.model.PessoaModel;
+import br.com.tezza.model.UsuarioModel;
 import br.com.tezza.repository.entity.PessoaEntity;
 import br.com.tezza.repository.entity.UsuarioEntity;
 import br.com.tezza.uteis.Uteis;
@@ -54,6 +59,68 @@ public class PessoaRepository {
 
 		// Grava no banco de dados o objeto pessoaEntity.
 		entityManager.persist(pessoaEntity);
+
+	}
+
+	// Lista todos os registros da tabela Pessoa.
+	public List<PessoaModel> GetPessoas(){
+		// Cria uma lista para adicionar registros do tipo PessoaModel.
+		List<PessoaModel> pessoasModel = new ArrayList<PessoaModel>();
+
+		// Inicia a variável. Agora é possível realizar operação com o banco de dados.
+		entityManager =  Uteis.JpaEntityManager();
+
+		// Passa a query que deseja utilizar na consulta.
+		Query query = entityManager.createNamedQuery("PessoaEntity.findAll");
+
+		@SuppressWarnings("unchecked")
+		// Recebe todos os registros encontrados na consulta.
+		Collection<PessoaEntity> pessoasEntity = (Collection<PessoaEntity>)query.getResultList();
+
+		// Seta valor nulo para pessoaModel.
+		PessoaModel pessoaModel = null;
+
+		// Percorre a lista pessoasEntity.
+		for (PessoaEntity pessoaEntity : pessoasEntity) {
+
+			// Instância uma nova PessoaModel.
+			pessoaModel = new PessoaModel();
+			//Seta os objetos da lista pessoasEntity para o objeto pessoaModel.
+			pessoaModel.setCodigo(pessoaEntity.getCodigo());
+			pessoaModel.setDataCadastro(pessoaEntity.getDataCadastro());
+			pessoaModel.setEmail(pessoaEntity.getEmail());
+			pessoaModel.setEndereco(pessoaEntity.getEndereco());
+			pessoaModel.setNome(pessoaEntity.getNome());
+
+			// Altera o tipo de origem para quando for exibido mostrar o nome inteiro é não só a inicial.
+			if(pessoaEntity.getOrigemCadastro().equals("X"))
+				pessoaModel.setOrigemCadastro("XML");
+			else
+				pessoaModel.setOrigemCadastro("INPUT");
+
+			// Adiciona uma 'mascara' para quando for exibir o resultado mostrar Masculino e Feminino ao invez de M e F.
+			if(pessoaEntity.getSexo().equals("M"))
+				pessoaModel.setSexo("Masculino");
+			else
+				pessoaModel.setSexo("Feminino");
+
+			// Cria um novo objeto para receber o valor do objeto pessoaEntity.
+			UsuarioEntity usuarioEntity =  pessoaEntity.getUsuarioEntity();
+
+			// Instância um novo UsuarioModel.
+			UsuarioModel usuarioModel = new UsuarioModel();
+			// Seta usuarioEntity para o usuarioModel.
+			usuarioModel.setUsuario(usuarioEntity.getUsuario());
+
+			// Seta usuarioMode para pessoaModel.
+			pessoaModel.setUsuarioModel(usuarioModel);
+
+			// Adiciona pessoaModel a lista pessoasModel.
+			pessoasModel.add(pessoaModel);
+		}
+
+		// Retorna uma lista contendo todos os registros do tipo Pessoa encontrados no banco de dados.
+		return pessoasModel;
 
 	}
 }

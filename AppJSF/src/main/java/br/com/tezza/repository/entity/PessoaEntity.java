@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -18,6 +20,10 @@ import javax.persistence.Table;
  */
 @Entity // Diz que esta classe é uma entidade
 @Table(name="tb_pessoa") // Nome desta tabela no banco de dados.
+// Query para buscar todos os registros cadastradas na tabela Pessoa.
+@NamedQueries({
+	@NamedQuery(name = "PessoaEntity.findAll",query= "SELECT p FROM PessoaEntity p")
+})
 public class PessoaEntity {
 
 	@Id              // Este atributo será a chave primária da tabela tb_pessoa.

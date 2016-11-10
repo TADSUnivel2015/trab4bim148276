@@ -121,6 +121,30 @@ public class PessoaRepository {
 
 		// Retorna uma lista contendo todos os registros do tipo Pessoa encontrados no banco de dados.
 		return pessoasModel;
+	}
 
+	// Constulta uma pessoa pelo seu código.
+	// codigo contém o código da pessoa.
+	private PessoaEntity GetPessoa(int codigo){
+
+		entityManager =  Uteis.JpaEntityManager();
+
+		return entityManager.find(PessoaEntity.class, codigo);
+	}
+
+	// Altera a pessoa no banco de dados.
+	// pessoaModel contém a pessoa que será alterada.
+	public void AlterarRegistro(PessoaModel pessoaModel){
+
+		entityManager =  Uteis.JpaEntityManager();
+
+		PessoaEntity pessoaEntity = this.GetPessoa(pessoaModel.getCodigo());
+
+		pessoaEntity.setEmail(pessoaModel.getEmail());
+		pessoaEntity.setEndereco(pessoaModel.getEndereco());
+		pessoaEntity.setNome(pessoaModel.getNome());
+		pessoaEntity.setSexo(pessoaModel.getSexo());
+
+		entityManager.merge(pessoaEntity);
 	}
 }

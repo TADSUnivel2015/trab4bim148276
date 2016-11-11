@@ -22,7 +22,9 @@ import javax.persistence.Table;
 @Table(name="tb_pessoa") // Nome desta tabela no banco de dados.
 // Query para buscar todos os registros cadastradas na tabela Pessoa.
 @NamedQueries({
-	@NamedQuery(name = "PessoaEntity.findAll",query= "SELECT p FROM PessoaEntity p")
+	@NamedQuery(name = "PessoaEntity.findAll",query= "SELECT p FROM PessoaEntity p"),
+	// Vai retornar o total de pessoas por origem de cadastro
+	@NamedQuery(name="PessoaEntity.GroupByOrigemCadastro",query= "SELECT p.origemCadastro, count(p) as total FROM PessoaEntity p GROUP By p.origemCadastro")
 })
 public class PessoaEntity {
 
